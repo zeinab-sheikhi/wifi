@@ -104,17 +104,8 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
 
     private void launchLevel() {
         int level = wifiManager != null ? wifiManager.getConnectionInfo().getRssi() : 0;
-        result.success(level);
-        // if (level != 0) {
-        //     if (level <= 0 && level >= -55) {
-        //         result.success(3);
-        //     } else if (level < -55 && level >= -80) {
-        //         result.success(2);
-        //     } else if (level < -80 && level >= -100) {
-        //         result.success(1);
-        //     } else {
-        //         result.success(0);
-        //     }
+         if (level != 0) {
+             result.success(level);
             clearMethodCallAndResult();
         } else {
             finishWithError("unavailable", "wifi level not available.");
@@ -184,15 +175,8 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
             List<ScanResult> scanResultList = wifiManager.getScanResults();
             for (ScanResult scanResult : scanResultList) {
                 int level = scanResult.level;
-                // if (scanResult.level <= 0 && scanResult.level >= -55) {
-                //     level = 3;
-                // } else if (scanResult.level < -55 && scanResult.level >= -80) {
-                //     level = 2;
-                // } else if (scanResult.level < -80 && scanResult.level >= -100) {
-                //     level = 1;
-                // } else {
-                //     level = 0;
-                // }
+                     level = 0;
+                 }
                 HashMap<String, Object> maps = new HashMap<>();
                 if (key.isEmpty()) {
                     maps.put("ssid", scanResult.SSID);
