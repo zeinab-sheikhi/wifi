@@ -175,7 +175,7 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
             List<ScanResult> scanResultList = wifiManager.getScanResults();
             for (ScanResult scanResult : scanResultList) {
                 int level = scanResult.level;
-                 }
+                 
                 HashMap<String, Object> maps = new HashMap<>();
                 if (key.isEmpty()) {
                     maps.put("ssid", scanResult.SSID);
