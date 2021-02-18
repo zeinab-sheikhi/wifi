@@ -178,12 +178,12 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
                  
                 HashMap<String, Object> maps = new HashMap<>();
                 if (key.isEmpty()) {
-                    maps.put("ssid", scanResult.SSID);
+                    maps.put("bssid", scanResult.BSSID);
                     maps.put("level", level);
                     list.add(maps);
                 } else {
                     if (scanResult.SSID.contains(key)) {
-                        maps.put("ssid", scanResult.SSID);
+                        maps.put("bssid", scanResult.BSSID);
                         maps.put("level", level);
                         list.add(maps);
                     }
