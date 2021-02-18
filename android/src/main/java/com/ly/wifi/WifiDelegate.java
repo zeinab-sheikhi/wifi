@@ -178,12 +178,12 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
                  
                 HashMap<String, Object> maps = new HashMap<>();
                 if (key.isEmpty()) {
-                    maps.put("bssid", scanResult.BSSID);
+                    maps.put("ssid", scanResult.SSID);
                     maps.put("level", level);
                     list.add(maps);
                 } else {
                     if (scanResult.SSID.contains(key)) {
-                        maps.put("bssid", scanResult.BSSID);
+                        maps.put("ssid", scanResult.SSID);
                         maps.put("level", level);
                         list.add(maps);
                     }
@@ -207,9 +207,9 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
     }
 
     private void connection() {
-        String bssid = methodCall.argument("bssid");
+        String ssid = methodCall.argument("ssid");
         String password = methodCall.argument("password");
-        WifiConfiguration wifiConfig = createWifiConfig(bssid, password);
+        WifiConfiguration wifiConfig = createWifiConfig(ssid, password);
         if (wifiConfig == null) {
             finishWithError("unavailable", "wifi config is null!");
             return;
@@ -232,15 +232,15 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
         }
     }
 
-    private WifiConfiguration createWifiConfig(String bssid, String Password) {
+    private WifiConfiguration createWifiConfig(String ssid, String Password) {
         WifiConfiguration config = new WifiConfiguration();
-        config.BSSID = "\"" + bssid + "\"";
+        config.SSID = "\"" + ssid + "\"";
         config.allowedAuthAlgorithms.clear();
         config.allowedGroupCiphers.clear();
         config.allowedKeyManagement.clear();
         config.allowedPairwiseCiphers.clear();
         config.allowedProtocols.clear();
-        WifiConfiguration tempConfig = isExist(wifiManager, bssid);
+        WifiConfiguration tempConfig = isExist(wifiManager, ssid);
         if (tempConfig != null) {
             wifiManager.removeNetwork(tempConfig.networkId);
         }
@@ -256,11 +256,11 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
         return config;
     }
 
-    private WifiConfiguration isExist(WifiManager wifiManager, String bssid) {
+    private WifiConfiguration isExist(WifiManager wifiManager, String ssid) {
         List<WifiConfiguration> existingConfigs = wifiManager.getConfiguredNetworks();
         if(existingConfigs != null) {
             for (WifiConfiguration existingConfig : existingConfigs) {
-                if (existingConfig.BSSID.equals("\"" + bssid + "\"")) {
+                if (existingConfig.SSID.equals("\"" + ssid + "\"")) {
                     return existingConfig;
                 }
             }
