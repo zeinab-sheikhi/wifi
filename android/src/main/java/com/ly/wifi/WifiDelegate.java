@@ -83,6 +83,13 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
         }
         launchSSID();
     }
+    public void getBSSID(MethodCall MethodCall, MethodChannel.Result result) {
+        if (!setPendingMethodCallAndResult(methodCall, result)) {
+            finishWithAlreadyActiveError();
+            return;
+        }
+        launchBSSID();
+    }
 
     public void getLevel(MethodCall methodCall, MethodChannel.Result result) {
         if (!setPendingMethodCallAndResult(methodCall, result)) {
@@ -99,6 +106,16 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
             clearMethodCallAndResult();
         } else {
             finishWithError("unavailable", "wifi name not available.");
+        }
+    }
+    private void launchBSSID() {
+        String wifiBSSID = wifiManager != null ? wifiManager.getConnectionInfo.getBSSID().replace("\"", "") : "";
+        if(!wifiBSSID.isEmpty()) {
+            result.success(wifiBSSID);
+            clearMethodCallAndResult();
+        } else {
+            finishWithError("unavailable", "wifi BSSID is not available.");
+
         }
     }
 
@@ -178,12 +195,12 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
                  
                 HashMap<String, Object> maps = new HashMap<>();
                 if (key.isEmpty()) {
-                    maps.put("ssid", scanResult.SSID);
+                    maps.put("bssid", scanResult.BSSID);
                     maps.put("level", level);
                     list.add(maps);
                 } else {
                     if (scanResult.SSID.contains(key)) {
-                        maps.put("ssid", scanResult.SSID);
+                        maps.put("bssid", scanResult.BSSID);
                         maps.put("level", level);
                         list.add(maps);
                     }
