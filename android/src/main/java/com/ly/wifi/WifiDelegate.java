@@ -207,9 +207,9 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
     }
 
     private void connection() {
-        String ssid = methodCall.argument("ssid");
+        String bssid = methodCall.argument("bssid");
         String password = methodCall.argument("password");
-        WifiConfiguration wifiConfig = createWifiConfig(ssid, password);
+        WifiConfiguration wifiConfig = createWifiConfig(bssid, password);
         if (wifiConfig == null) {
             finishWithError("unavailable", "wifi config is null!");
             return;
@@ -232,15 +232,15 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
         }
     }
 
-    private WifiConfiguration createWifiConfig(String ssid, String Password) {
+    private WifiConfiguration createWifiConfig(String bssid, String Password) {
         WifiConfiguration config = new WifiConfiguration();
-        config.SSID = "\"" + ssid + "\"";
+        config.BSSID = "\"" + bssid + "\"";
         config.allowedAuthAlgorithms.clear();
         config.allowedGroupCiphers.clear();
         config.allowedKeyManagement.clear();
         config.allowedPairwiseCiphers.clear();
         config.allowedProtocols.clear();
-        WifiConfiguration tempConfig = isExist(wifiManager, ssid);
+        WifiConfiguration tempConfig = isExist(wifiManager, bssid);
         if (tempConfig != null) {
             wifiManager.removeNetwork(tempConfig.networkId);
         }
@@ -256,11 +256,11 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
         return config;
     }
 
-    private WifiConfiguration isExist(WifiManager wifiManager, String ssid) {
+    private WifiConfiguration isExist(WifiManager wifiManager, String bssid) {
         List<WifiConfiguration> existingConfigs = wifiManager.getConfiguredNetworks();
         if(existingConfigs != null) {
             for (WifiConfiguration existingConfig : existingConfigs) {
-                if (existingConfig.SSID.equals("\"" + ssid + "\"")) {
+                if (existingConfig.BSSID.equals("\"" + bssid + "\"")) {
                     return existingConfig;
                 }
             }
