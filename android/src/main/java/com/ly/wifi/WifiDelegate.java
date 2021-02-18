@@ -76,12 +76,12 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
         this.permissionManager = permissionManager;
     }
 
-    public void getBSSID(MethodCall methodCall, MethodChannel.Result result) {
+    public void getSSID(MethodCall methodCall, MethodChannel.Result result) {
         if (!setPendingMethodCallAndResult(methodCall, result)) {
             finishWithAlreadyActiveError();
             return;
         }
-        launchBSSID();
+        launchSSID();
     }
 
     public void getLevel(MethodCall methodCall, MethodChannel.Result result) {
@@ -92,8 +92,8 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
         launchLevel();
     }
 
-    private void launchBSSID() {
-        String wifiName = wifiManager != null ? wifiManager.getConnectionInfo().getBSSID().replace("\"", "") : "";
+    private void launchSSID() {
+        String wifiName = wifiManager != null ? wifiManager.getConnectionInfo().getSSID().replace("\"", "") : "";
         if (!wifiName.isEmpty()) {
             result.success(wifiName);
             clearMethodCallAndResult();
