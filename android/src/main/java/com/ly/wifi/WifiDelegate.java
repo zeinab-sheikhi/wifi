@@ -199,7 +199,7 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
                     maps.put("level", level);
                     list.add(maps);
                 } else {
-                    if (scanResult.SSID.contains(key)) {
+                    if (scanResult.BSSID.contains(key)) {
                         maps.put("bssid", scanResult.BSSID);
                         maps.put("level", level);
                         list.add(maps);
