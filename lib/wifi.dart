@@ -36,7 +36,7 @@ class Wifi {
   static Future<List<WifiBSSIDResult>> bssidList(String key) async {
     final Map<String, dynamic> params = {
       'key': key,
-    }
+    };
     var bssidResults = await _channel.invokeMethod('bssidList', params);
     List<WifiBSSIDResult> bssidResultList = [];
     for (int i = 0; i < bssidResults.length; i++) {
