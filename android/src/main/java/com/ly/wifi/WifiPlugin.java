@@ -60,6 +60,9 @@ public class WifiPlugin implements MethodCallHandler {
             case "list":
                 delegate.getWifiList(call, result);
                 break;
+            case "bssidList":
+                delegate.getWifiBSSIDList(call, result);
+                break;
             case "connection":
                 delegate.connection(call, result);
                 break;

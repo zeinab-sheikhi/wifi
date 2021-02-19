@@ -210,6 +210,44 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
         result.success(list);
         clearMethodCallAndResult();
     }
+    
+    public void getWifiBSSIDList(MethodCall methodCall, MethodChannel.Result result) {
+        if (!setPendingMethodCallAndResult(methodCall, result)) {
+            finishWithAlreadyActiveError();
+            return;
+        }
+        if (!permissionManager.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            permissionManager.askForPermission(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_ACCESS_FINE_LOCATION_PERMISSION);
+            return;
+        }
+        launchWifiBSSIDList();
+    }
+
+    private void launchWifiBSSIDList() {
+        String key = methodCall.argument("key");
+        List<HashMap> list = new ArrayList<>();
+        if (wifiManager != null) {
+            List<ScanResult> scanResultList = wifiManager.getScanResults();
+            for (ScanResult scanResult : scanResultList) {
+                int level = scanResult.level;
+                 
+                HashMap<String, Object> maps = new HashMap<>();
+                if (key.isEmpty()) {
+                    maps.put("bssid", scanResult.BSSID);
+                    maps.put("level", level);
+                    list.add(maps);
+                } else {
+                    if (scanResult.BSSID.contains(key)) {
+                        maps.put("bssid", scanResult.BSSID);
+                        maps.put("level", level);
+                        list.add(maps);
+                    }
+                }
+            }
+        }
+        result.success(list);
+        clearMethodCallAndResult();
+    }
 
     public void connection(MethodCall methodCall, MethodChannel.Result result) {
         if (!setPendingMethodCallAndResult(methodCall, result)) {
