@@ -109,7 +109,7 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
         }
     }
     private void launchBSSID() {
-        String wifiBSSID = wifiManager != null ? wifiManager.getConnectionInfo.getBSSID() : "";
+        String wifiBSSID = wifiManager != null ? wifiManager.getConnectionInfo().getBSSID() : "";
         if(!wifiBSSID.isEmpty()) {
             result.success(wifiBSSID);
             clearMethodCallAndResult();
