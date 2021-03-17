@@ -255,7 +255,7 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
             wifiManager.startScan();
             registerReceiver(wifiReceiver,new
                     IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-            //results = wifiManager.getScanResults();
+            results = wifiManager.getScanResults();
             for(ScanResult result : results)
                 collectRSSI(result);
         }
