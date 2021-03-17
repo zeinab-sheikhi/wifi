@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:collection';
+
 
 import 'package:flutter/services.dart';
 
@@ -46,6 +48,17 @@ class Wifi {
 
   }
 
+  static Future<AccessPointResult> accessPointList(String key) async {
+    final Map<String, dynamic> params = {
+      'key': key,
+    };
+    var accessPoints = await _channel.invokeMethod('accessPointList', params);
+    accessPoints.forEach((key,value) => print('${k}: ${v}'));
+    return accessPoints;
+
+  }
+
+
   static Future<WifiState> connection(String ssid, String password) async {
     final Map<String, dynamic> params = {
       'ssid': ssid,
@@ -75,4 +88,9 @@ class WifiBSSIDResult {
   String bssid;
   int level;
   WifiBSSIDResult(this.bssid, this.level);
+}
+class AccessPointResult {
+  Map<String, List<int>> rssiValues;
+  AccessPointResult(this.rssiValues);
+
 }
