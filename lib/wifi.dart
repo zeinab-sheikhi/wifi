@@ -53,7 +53,7 @@ class Wifi {
       'key': key,
     };
     var accessPoints = await _channel.invokeMethod('accessPointList', params);
-    accessPoints.forEach((key,value) => print('${k}: ${v}'));
+    accessPoints.forEach((k,v) => print('${k}: ${v}'));
     return accessPoints;
 
   }
