@@ -238,7 +238,7 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
                         result.success(getAccessPoints());
                         clearMethodCallAndResult();
                     }
-                }.start());
+                }.start();
         
     }
 
