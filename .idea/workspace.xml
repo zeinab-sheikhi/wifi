@@ -44,7 +44,7 @@
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="flutter.settings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -180,6 +180,12 @@
     <MESSAGE value="iOS connection return WifiState" />
     <MESSAGE value="add signal strength" />
     <option name="LAST_COMMIT_MESSAGE" value="add signal strength" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="141" y="23" key="SettingsEditor" timestamp="1615875088048">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="141" y="23" key="SettingsEditor/0.0.1280.800@0.0.1280.800" timestamp="1615875088048" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

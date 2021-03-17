@@ -33,6 +33,10 @@ public class
 WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
     private Activity activity;
     private WifiManager wifiManager;
+    private Handler handler = new Handler();
+    private HashMap<String, ArrayList<Integer>> ssid_rssi = new HashMap<>();
+    private List<ScanResult> results;
+
     private PermissionManager permissionManager;
     private static final int REQUEST_ACCESS_FINE_LOCATION_PERMISSION = 1;
     private static final int REQUEST_CHANGE_WIFI_STATE_PERMISSION = 2;
@@ -210,6 +214,73 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
         result.success(list);
         clearMethodCallAndResult();
     }
+    
+    public void getAccessPointsList(MethodCall methodCall, MethodChannel.Result result) {
+        if (!setPendingMethodCallAndResult(methodCall, result)) {
+            finishWithAlreadyActiveError();
+            return;
+        }
+        if (!permissionManager.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            permissionManager.askForPermission(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_ACCESS_FINE_LOCATION_PERMISSION);
+            return;
+        }
+        launchAccessPointsList();
+    }
+    private void launchAccessPointsList() {
+        
+        new CountDownTimer(30000, 100) {
+                    public void onTick(long millisUntilFinished) {
+                        handler.postDelayed(run, 1000);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        result.success(getAccessPoints());
+                        clearMethodCallAndResult();
+                    }
+                }.start());
+        
+    }
+
+    
+    BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                results = wifiManager.getScanResults();
+            }
+        };
+
+    final Runnable run = new Runnable() {
+        public void run() {
+            wifiManager.startScan();
+            registerReceiver(wifiReceiver,new
+                    IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+            //results = wifiManager.getScanResults();
+            for(ScanResult result : results)
+                collectRSSI(result);
+        }
+    };
+    private void collectRSSI(ScanResult scanResult) {
+
+    ArrayList<Integer> rssiValues;
+    String accessPointBSSID = scanResult.BSSID;
+    int accessPointRSSI = scanResult.level;
+
+    if (!ssid_rssi.containsKey(accessPointBSSID))
+        rssiValues = new ArrayList<>();
+
+    else
+        rssiValues = ssid_rssi.get(accessPointBSSID);
+
+    assert rssiValues != null;
+    rssiValues.add(accessPointRSSI);
+    ssid_rssi.put(accessPointBSSID, rssiValues);
+}
+
+    private HashMap<String, ArrayList<Integer>> getAccessPoints() {
+        return ssid_rssi;
+}
+
     
     public void getWifiBSSIDList(MethodCall methodCall, MethodChannel.Result result) {
         if (!setPendingMethodCallAndResult(methodCall, result)) {
