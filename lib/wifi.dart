@@ -48,7 +48,7 @@ class Wifi {
 
   }
 
-  static Future<AccessPointResult> accessPointList(String key) async {
+  static Future<Map<String, List<int>>> accessPointList(String key) async {
     final Map<String, dynamic> params = {
       'key': key,
     };
@@ -88,9 +88,4 @@ class WifiBSSIDResult {
   String bssid;
   int level;
   WifiBSSIDResult(this.bssid, this.level);
-}
-class AccessPointResult {
-  Map<String, List<int>> rssiValues;
-  AccessPointResult(this.rssiValues);
-
 }
