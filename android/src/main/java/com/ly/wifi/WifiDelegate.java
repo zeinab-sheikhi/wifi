@@ -207,7 +207,7 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
                     maps.put("level", level);
                     list.add(maps);
                 } else {
-                    if (scanResult.BSSID.contains(key)) {
+                    if (scanResult.SSID.contains(key)) {
                         maps.put("ssid", scanResult.SSID);
                         maps.put("level", level);
                         list.add(maps);
@@ -232,17 +232,22 @@ WifiDelegate implements PluginRegistry.RequestPermissionsResultListener {
     }
     private void launchAccessPointsList() {
         
-        new CountDownTimer(30000, 100) {
-                    public void onTick(long millisUntilFinished) {
-                        handler.postDelayed(run, 1000);
-                    }
+        HashMap<String, Integer> maps = new HashMap<>();
+        List<ScanResult> scanResultList;
 
-                    @Override
-                    public void onFinish() {
-                        result.success(getAccessPoints());
-                        clearMethodCallAndResult();
-                    }
-                }.start();
+        
+        if(wifiManager != null) {
+            wifiManager.startScan();
+            scanResultList = wifiManager.getScanResults();
+            for(ScanResult scanResult : scanResultList) {
+                String accessPointSSID = scanResult.SSID;
+                int accessPointRSSI = scanResult.level;
+                maps.put(accessPointSSID, accessPointRSSI);
+            }
+            
+        result.success(maps);
+        clearMethodCallAndResult();
+        }
         
     }
 
